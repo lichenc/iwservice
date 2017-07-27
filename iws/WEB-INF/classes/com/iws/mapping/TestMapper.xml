@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.iws.dao.TestDao" >
+  <resultMap id="BaseResultMap" type="com.iws.pojo.TestPojo" >
+    <id column="uuid" property="uuid" jdbcType="VARCHAR" />
+    <result column="testName" property="testName" jdbcType="VARCHAR" />
+    <result column="testDesc" property="testDesc" jdbcType="VARCHAR" />    
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+     uuid, testName, testDesc
+  </sql>
+  
+  <select id="queryAll" resultMap="BaseResultMap">
+  	 select * from test  where 1 = 1    
+  </select> 
+  
+</mapper>

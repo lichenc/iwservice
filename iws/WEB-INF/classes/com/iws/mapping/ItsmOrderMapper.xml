@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.iws.dao.ItsmOrderDao">
+	<resultMap id="BaseResultMap" type="com.iws.pojo.itsmorder.ItsmOrderInfoBean">
+		<id column="uuid" property="uuid" jdbcType="VARCHAR" />
+		<result column="orId" property="orId" jdbcType="VARCHAR" />
+		<result column="orCategory" property="orCategory" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="workContent" property="workContent" jdbcType="VARCHAR" />
+		<result column="applicant" property="applicant" jdbcType="VARCHAR" />
+		<result column="applyTime" property="applyTime" jdbcType="VARCHAR" />
+		<result column="performer" property="performer" jdbcType="VARCHAR" />
+		<result column="performTime" property="performTime" jdbcType="VARCHAR" />
+		<result column="isowner" property="isowner" jdbcType="VARCHAR" />
+		<result column="businessSystem" property="businessSystem"
+			jdbcType="VARCHAR" />
+		<result column="performMode" property="performMode" jdbcType="VARCHAR" />
+		<result column="annotation" property="annotation" jdbcType="VARCHAR" />
+		<result column="dataState" property="dataState" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="creator" property="creator" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="VARCHAR" />
+		<result column="modifier" property="modifier" jdbcType="VARCHAR" />
+		<result column="modifyTime" property="modifyTime" jdbcType="VARCHAR" />
+		<result column="att1" property="att1" jdbcType="VARCHAR" />
+		<result column="att2" property="att2" jdbcType="VARCHAR" />
+		<result column="att3" property="att3" jdbcType="VARCHAR" />
+	</resultMap>
+
+
+	<select id="count" parameterType="com.iws.pojo.itsmorder.ItsmOrderDto"
+		resultType="int">
+		select count(*) as counts from itsmorder where 1 = 1
+		<include refid="whereSql"></include>
+	</select>
+
+    <select id="queryOrId" resultType="String">
+	    select orId from itsmorder 
+	</select>
+
+
+	<select id="queryItsmOrderByParameter" resultMap="BaseResultMap"
+		parameterType="com.iws.pojo.itsmorder.ItsmOrderDto">
+
+		SELECT * FROM (SELECT tt.*, ROWNUM AS rowno
+		FROM (
+
+		select
+
+		<if test="itsmOrderInfoBean.uuid != null">
+			uuid,
+		</if>
+
+		<if test="itsmOrderInfoBean.orId != null">
+			orId,
+		</if>
+
+		<if test="itsmOrderInfoBean.orCategory != null">
+			orCategory,
+		</if>
+
+		<if test="itsmOrderInfoBean.title != null">
+			title,
+		</if>
+
+		<if test="itsmOrderInfoBean.workContent != null">
+			workContent,
+		</if>
+
+		<if test="itsmOrderInfoBean.applicant != null">
+			applicant,
+		</if>
+
+		<if test="itsmOrderInfoBean.applyTime != null">
+			to_char(applyTime,'yyyy-mm-dd hh24:mi:ss'),
+		</if>
+
+		<if test="itsmOrderInfoBean.performer != null">
+			performer,
+		</if>
+
+		<if test="itsmOrderInfoBean.performTime != null">
+			to_char(performTime,'yyyy-mm-dd hh24:mi:ss'),
+		</if>
+
+		<if test="itsmOrderInfoBean.isowner != null">
+			isowner,
+		</if>
+
+		<if test="itsmOrderInfoBean.businessSystem != null">
+			businessSystem,
+		</if>
+
+		<if test="itsmOrderInfoBean.performMode != null">
+			performMode,
+		</if>
+
+		<if test="itsmOrderInfoBean.annotation != null">
+			annotation,
+		</if>
+
+		<if test="itsmOrderInfoBean.dataState != null">
+			dataState,
+		</if>
+
+		<if test="itsmOrderInfoBean.status != null">
+			status,
+		</if>
+
+		<if test="itsmOrderInfoBean.creator != null">
+			creator,
+		</if>
+
+		<if test="itsmOrderInfoBean.createTime != null">
+			to_char(createTime,'yyyy-mm-dd hh24:mi:ss'),
+		</if>
+
+		<if test="itsmOrderInfoBean.modifier != null">
+			modifier,
+		</if>
+
+		<if test="itsmOrderInfoBean.modifyTime != null">
+			to_char(modifyTime,'yyyy-mm-dd hh24:mi:ss'),
+		</if>
+
+		<if test="itsmOrderInfoBean.att1 != null">
+			att1,
+		</if>
+
+		<if test="itsmOrderInfoBean.att2 != null">
+			att2,
+		</if>
+
+		<if test="itsmOrderInfoBean.att3 != null">
+			att3,
+		</if>
+		1
+
+		from
+		itsmorder where 1 = 1
+
+		<include refid="whereSql"></include>
+
+		<!-- start of special -->
+		<if test="itsmOrderSearchParameter.sort != null and itsmOrderSearchParameter.sort != ''">
+			order by ${itsmOrderSearchParameter.sort} ${itsmOrderSearchParameter.order}
+		</if>
+		<!-- end of special -->
+
+
+		) tt
+		WHERE ROWNUM &lt;
+		(#{itsmOrderSearchParameter.start}+#{itsmOrderSearchParameter.number})
+		) table_alias WHERE
+		table_alias.rowno &gt;=
+		#{itsmOrderSearchParameter.start}
+	</select>
+
+
+	<insert id="insertItsmOrder" parameterType="com.iws.pojo.itsmorder.ItsmOrderInfoBean">
+		insert into itsmorder
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+				uuid ,
+			<if test="orId != null">
+				orId,
+			</if>
+			<if test="orCategory != null">
+				orCategory,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="workContent != null">
+				workContent,
+			</if>
+			<if test="applicant != null">
+				applicant,
+			</if>
+			<if test="applyTime != null">
+				applyTime,
+			</if>
+			<if test="performer != null">
+				performer,
+			</if>
+			<if test="performTime != null">
+				performTime,
+			</if>
+			<if test="isowner != null">
+				isowner,
+			</if>
+			<if test="businessSystem != null">
+				businessSystem,
+			</if>
+			<if test="performMode != null">
+				performMode,
+			</if>
+			<if test="annotation != null">
+				annotation,
+			</if>
+			<if test="dataState != null">
+				dataState,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="creator != null">
+				creator,
+			</if>
+<!-- 			<if test="createTime != null"> -->
+				createTime,
+<!-- 			</if> -->
+<!-- 			<if test="modifier != null"> -->
+<!-- 				modifier, -->
+<!-- 			</if> -->
+<!-- 			<if test="modifyTime != null"> -->
+<!-- 				modifyTime, -->
+<!-- 			</if> -->
+			<if test="att1 != null">
+				att1,
+			</if>
+			<if test="att2 != null">
+				att2,
+			</if>
+			<if test="att3 != null">
+				att3,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			
+			sys_guid(),
+			
+			<if test="orId != null">
+				#{orId,jdbcType=VARCHAR},
+			</if>
+			<if test="orCategory != null">
+				#{orCategory,jdbcType=VARCHAR},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="workContent != null">
+				#{workContent,jdbcType=VARCHAR},
+			</if>
+			<if test="applicant != null">
+				#{applicant,jdbcType=VARCHAR},
+			</if>
+			<if test="applyTime != null">
+				to_date(#{applyTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'),
+			</if>
+			<if test="performer != null">
+				#{performer,jdbcType=VARCHAR},
+			</if>
+			<if test="performTime != null">
+				to_date(#{performTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'),
+			</if>
+			<if test="isowner != null">
+				#{isowner,jdbcType=VARCHAR},
+			</if>
+			<if test="businessSystem != null">
+				#{businessSystem,jdbcType=VARCHAR},
+			</if>
+			<if test="performMode != null">
+				#{performMode,jdbcType=VARCHAR},
+			</if>
+			<if test="annotation != null">
+				#{annotation,jdbcType=VARCHAR},
+			</if>
+			<if test="dataState != null">
+				#{dataState,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="creator != null">
+				#{creator,jdbcType=VARCHAR},
+			</if>
+<!-- 			<if test="createTime != null"> -->
+<!-- 				to_date(#{createTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'), -->
+<!-- 			</if> -->
+systimestamp,
+<!-- 			<if test="modifier != null"> -->
+<!-- 				#{modifier,jdbcType=VARCHAR}, -->
+<!-- 			</if> -->
+<!-- 			<if test="modifyTime != null"> -->
+<!-- 				to_date(#{modifyTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'), -->
+<!-- 			</if> -->
+			<if test="att1 != null">
+				#{att1,jdbcType=VARCHAR},
+			</if>
+			<if test="att2 != null">
+				#{att2,jdbcType=VARCHAR},
+			</if>
+			<if test="att3 != null">
+				#{att3,jdbcType=VARCHAR},
+			</if>
+
+		</trim>
+	</insert>
+
+	
+
+
+	<update id="batchModifyItsmOrder" parameterType="com.iws.pojo.itsmorder.ItsmOrderDto">
+		update itsmorder
+		<set>
+			<if test="itsmOrderInfoBean.orId != null">
+				orId = #{itsmOrderInfoBean.orId,jdbcType=VARCHAR},
+			</if>
+			<if test="itsmOrderInfoBean.orCategory != null">
+				orCategory =
+				#{itsmOrderInfoBean.orCategory,jdbcType=VARCHAR},
+			</if>
+			<if test="itsmOrderInfoBean.title != null">
+				title = #{itsmOrderInfoBean.title,jdbcType=VARCHAR},
+			</if>
+			<if test="itsmOrderInfoBean.workContent != null">
+				workContent =
+				#{itsmOrderInfoBean.workContent,jdbcType=VARCHAR},
+			</if>
+			<if test="itsmOrderInfoBean.applicant != null">
+				applicant =
+				#{itsmOrderInfoBean.applicant,jdbcType=VARCHAR},
+			</if>
+			<if test="itsmOrderInfoBean.applyTime != null">
+				applyTime =
+				to_date(#{itsmOrderInfoBean.applyTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'),
+			</if>
+			<if test="itsmOrderInfoBean.performer != null">
+				performer =
+				#{itsmOrderInfoBean.performer,jdbcType=VARCHAR},
+			</if>
+			<if test="itsmOrderInfoBean.performTime != null">
+				performTime =
+				to_date(#{itsmOrderInfoBean.performTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'),
+			</if>
+			<if test="itsmOrderInfoBean.isowner != null">
+				isowner = #{itsmOrderInfoBean.isowner,jdbcType=VARCHAR},
+			</if>
+			<if test="itsmOrderInfoBean.businessSystem != null">
+				businessSystem =
+				#{itsmOrderInfoBean.businessSystem,jdbcType=VARCHAR},
+			</if>
+			<if test="itsmOrderInfoBean.performMode != null">
+				performMode =
+				#{itsmOrderInfoBean.performMode,jdbcType=VARCHAR},
+			</if>
+			<if test="itsmOrderInfoBean.annotation != null">
+				annotation =
+				#{itsmOrderInfoBean.annotation,jdbcType=VARCHAR},
+			</if>
+			<if test="itsmOrderInfoBean.dataState != null">
+				dataState =
+				#{itsmOrderInfoBean.dataState,jdbcType=VARCHAR},
+			</if>
+			<if test="itsmOrderInfoBean.status != null">
+				status = #{itsmOrderInfoBean.status,jdbcType=VARCHAR},
+			</if>
+<!-- 			<if test="itsmOrderInfoBean.creator != null"> -->
+<!-- 				creator = #{itsmOrderInfoBean.creator,jdbcType=VARCHAR}, -->
+<!-- 			</if> -->
+<!-- 			<if test="itsmOrderInfoBean.createTime != null"> -->
+<!-- 				createTime = -->
+<!-- 				to_date(#{itsmOrderInfoBean.createTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'), -->
+<!-- 			</if> -->
+			<if test="itsmOrderInfoBean.modifier != null">
+				modifier =
+				#{itsmOrderInfoBean.modifier,jdbcType=VARCHAR},
+			</if>
+<!-- 			<if test="itsmOrderInfoBean.modifyTime != null"> -->
+<!-- 				modifyTime = -->
+<!-- 				to_date(#{itsmOrderInfoBean.modifyTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'), -->
+<!-- 			</if> -->
+modifyTime=systimestamp,
+			<if test="itsmOrderInfoBean.att1 != null">
+				att1 = #{itsmOrderInfoBean.att1,jdbcType=VARCHAR},
+			</if>
+			<if test="itsmOrderInfoBean.att2 != null">
+				att2 = #{itsmOrderInfoBean.att2,jdbcType=VARCHAR},
+			</if>
+			<if test="itsmOrderInfoBean.att3 != null">
+				att3 = #{itsmOrderInfoBean.att3,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where 1=1
+		<include refid="whereSql"></include>
+	</update>
+
+	<delete id="deleteItsmOrderByUUID" parameterType="com.iws.pojo.itsmorder.ItsmOrderInfoBean">
+		delete from
+		itsmorder
+		where uuid = #{uuid,jdbcType=VARCHAR}
+	</delete>
+
+	<delete id="deleteItsmOrderByorId" parameterType="com.iws.pojo.itsmorder.ItsmOrderInfoBean">
+		delete from
+		itsmorder
+		where orId = #{orId,jdbcType=VARCHAR}
+	</delete>
+	
+	<sql id="whereSql">
+		<if
+			test="itsmOrderSearchParameter.uuid_equ != null and itsmOrderSearchParameter.uuid_equ != ''">
+			and uuid = #{itsmOrderSearchParameter.uuid_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.uuid_like != null and itsmOrderSearchParameter.uuid_like != ''">
+			and uuid like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.uuid_like,jdbcType=VARCHAR}),'%')
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.orId_equ != null and itsmOrderSearchParameter.orId_equ != ''">
+			and orId = #{itsmOrderSearchParameter.orId_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.orId_like != null and itsmOrderSearchParameter.orId_like != ''">
+			and orId like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.orId_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.orCategory_equ != null and itsmOrderSearchParameter.orCategory_equ != ''">
+			and orCategory = #{itsmOrderSearchParameter.orCategory_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.orCategory_like != null and itsmOrderSearchParameter.orCategory_like != ''">
+			and orCategory like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.orCategory_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.title_equ != null and itsmOrderSearchParameter.title_equ != ''">
+			and title = #{itsmOrderSearchParameter.title_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.title_like != null and itsmOrderSearchParameter.title_like != ''">
+			and title like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.title_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.workContent_equ != null and itsmOrderSearchParameter.workContent_equ != ''">
+			and workContent = #{itsmOrderSearchParameter.workContent_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.workContent_like != null and itsmOrderSearchParameter.workContent_like != ''">
+			and workContent like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.workContent_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.applicant_equ != null and itsmOrderSearchParameter.applicant_equ != ''">
+			and applicant = #{itsmOrderSearchParameter.applicant_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.applicant_like != null and itsmOrderSearchParameter.applicant_like != ''">
+			and applicant like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.applicant_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.applyTime_equ != null and itsmOrderSearchParameter.applyTime_equ != ''">
+			and applyTime = #{itsmOrderSearchParameter.applyTime_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.applyTime_like != null and itsmOrderSearchParameter.applyTime_like != ''">
+			and applyTime like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.applyTime_like,jdbcType=VARCHAR}),'%')
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.applyTimeBefore != null and itsmOrderSearchParameter.applyTimeBefore != ''">
+			and applyTime &lt; to_date(#{itsmOrderSearchParameter.applyTimeBefore,jdbcType=VARCHAR}, 'yyyy-mm-dd hh24:mi:ss')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.applyTimeAfter != null and itsmOrderSearchParameter.applyTimeAfter != ''">
+			and applyTime &gt; to_date(#{itsmOrderSearchParameter.applyTimeAfter,jdbcType=VARCHAR}, 'yyyy-mm-dd hh24:mi:ss')
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.performer_equ != null and itsmOrderSearchParameter.performer_equ != ''">
+			and performer = #{itsmOrderSearchParameter.performer_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.performer_like != null and itsmOrderSearchParameter.performer_like != ''">
+			and performer like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.performer_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.performTime_equ != null and itsmOrderSearchParameter.performTime_equ != ''">
+			and performTime = #{itsmOrderSearchParameter.performTime_equ,jdbcType=VARCHAR},jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.performTime_like != null and itsmOrderSearchParameter.performTime_like != ''">
+			and performTime like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.performTime_like,jdbcType=VARCHAR}),'%')
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.performTimeBefore != null and itsmOrderSearchParameter.performTimeBefore != ''">
+			and performTime &lt; to_date(#{itsmOrderSearchParameter.performTimeBefore,jdbcType=VARCHAR}), 'yyyy-mm-dd hh24:mi:ss')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.performTimeAfter != null and itsmOrderSearchParameter.performTimeAfter != ''">
+			and performTime &gt; to_date(#{itsmOrderSearchParameter.performTimeAfter,jdbcType=VARCHAR}), 'yyyy-mm-dd hh24:mi:ss')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.isowner_equ != null and itsmOrderSearchParameter.isowner_equ != ''">
+			and isowner = #{itsmOrderSearchParameter.isowner_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.isowner_like != null and itsmOrderSearchParameter.isowner_like != ''">
+			and isowner like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.isowner_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.businessSystem_equ != null and itsmOrderSearchParameter.businessSystem_equ != ''">
+			and businessSystem =
+			#{itsmOrderSearchParameter.businessSystem_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.businessSystem_like != null and itsmOrderSearchParameter.businessSystem_like != ''">
+			and businessSystem like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.businessSystem_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.performMode_equ != null and itsmOrderSearchParameter.performMode_equ != ''">
+			and performMode = #{itsmOrderSearchParameter.performMode_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.performMode_like != null and itsmOrderSearchParameter.performMode_like != ''">
+			and performMode like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.performMode_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.annotation_equ != null and itsmOrderSearchParameter.annotation_equ != ''">
+			and annotation = #{itsmOrderSearchParameter.annotation_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.annotation_like != null and itsmOrderSearchParameter.annotation_like != ''">
+			and annotation like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.annotation_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.dataState_equ != null and itsmOrderSearchParameter.dataState_equ != ''">
+			and dataState = #{itsmOrderSearchParameter.dataState_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.dataState_like != null and itsmOrderSearchParameter.dataState_like != ''">
+			and dataState like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.dataState_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.status_equ != null and itsmOrderSearchParameter.status_equ != ''">
+			and status = #{itsmOrderSearchParameter.status_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.status_like != null and itsmOrderSearchParameter.status_like != ''">
+			and status like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.status_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.creator_equ != null and itsmOrderSearchParameter.creator_equ != ''">
+			and creator = #{itsmOrderSearchParameter.creator_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.creator_like != null and itsmOrderSearchParameter.creator_like != ''">
+			and creator like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.creator_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.createTime_equ != null and itsmOrderSearchParameter.createTime_equ != ''">
+			and createTime = #{itsmOrderSearchParameter.createTime_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.createTime_like != null and itsmOrderSearchParameter.createTime_like != ''">
+			and createTime like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.createTime_like,jdbcType=VARCHAR}),'%')
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.createTimeBefore != null and itsmOrderSearchParameter.createTimeBefore != ''">
+			and createTime &lt; to_date(#{itsmOrderSearchParameter.createTimeBefore,jdbcType=VARCHAR}, 'yyyy-mm-dd hh24:mi:ss')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.createTimeAfter != null and itsmOrderSearchParameter.createTimeAfter != ''">
+			and createTime &gt; to_date(#{itsmOrderSearchParameter.createTimeAfter,jdbcType=VARCHAR}, 'yyyy-mm-dd hh24:mi:ss')
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.modifier_equ != null and itsmOrderSearchParameter.modifier_equ != ''">
+			and modifier = #{itsmOrderSearchParameter.modifier_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.modifier_like != null and itsmOrderSearchParameter.modifier_like != ''">
+			and modifier like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.modifier_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.modifyTime_equ != null and itsmOrderSearchParameter.modifyTime_equ != ''">
+			and modifyTime = #{itsmOrderSearchParameter.modifyTime_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.modifyTime_like != null and itsmOrderSearchParameter.modifyTime_like != ''">
+			and modifyTime like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.modifyTime_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.modifyTimeBefore != null and itsmOrderSearchParameter.modifyTimeBefore != ''">
+			and modifyTime &lt; to_date(#{itsmOrderSearchParameter.modifyTimeBefore,jdbcType=VARCHAR}, 'yyyy-mm-dd hh24:mi:ss')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.modifyTimeAfter != null and itsmOrderSearchParameter.modifyTimeAfter != ''">
+			and modifyTime &gt; to_date(#{itsmOrderSearchParameter.modifyTimeAfter,jdbcType=VARCHAR}, 'yyyy-mm-dd hh24:mi:ss')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.att1_equ != null and itsmOrderSearchParameter.att1_equ != ''">
+			and att1 = #{itsmOrderSearchParameter.att1_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.att1_like != null and itsmOrderSearchParameter.att1_like != ''">
+			and att1 like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.att1_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.att2_equ != null and itsmOrderSearchParameter.att2_equ != ''">
+			and att2 = #{itsmOrderSearchParameter.att2_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.att2_like != null and itsmOrderSearchParameter.att2_like != ''">
+			and att2 like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.att2_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="itsmOrderSearchParameter.att3_equ != null and itsmOrderSearchParameter.att3_equ != ''">
+			and att3 = #{itsmOrderSearchParameter.att3_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="itsmOrderSearchParameter.att3_like != null and itsmOrderSearchParameter.att3_like != ''">
+			and att3 like CONCAT(CONCAT('%',
+			#{itsmOrderSearchParameter.att3_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<!-- end of normal -->
+
+	</sql>
+
+</mapper>

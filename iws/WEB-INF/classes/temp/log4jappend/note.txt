@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile={Path/to/your/log4j-rolling-appender-20110405-2024-1.2.15.jar} -DgroupId=log4j -DartifactId=log4j-append -Dversion=1.2.15 -Dpackaging=jar

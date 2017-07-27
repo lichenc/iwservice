@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.iws.dao.SysConfDao">
+	<resultMap id="BaseResultMap" type="com.iws.pojo.sysconf.SysConfInfoBean">
+		<id column="uuid" property="uuid" jdbcType="VARCHAR" />
+		<result column="CFGCategory" property="cfgCategory" jdbcType="VARCHAR" />
+		<result column="CFGGroup" property="cfgGroup" jdbcType="VARCHAR" />
+		<result column="CFGKey" property="cfgKey" jdbcType="VARCHAR" />
+		<result column="CFGKeyType" property="cfgKeyType" jdbcType="VARCHAR" />
+		<result column="CFGValue" property="cfgValue" jdbcType="VARCHAR" />
+		<result column="CFGValueType" property="cfgValueType" jdbcType="VARCHAR" />
+		<result column="CFGValueInfo" property="cfgValueInfo" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="creator" property="creator" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="VARCHAR" />
+		<result column="modifier" property="modifier" jdbcType="VARCHAR" />
+		<result column="modifyTime" property="modifyTime" jdbcType="VARCHAR" />
+		<result column="att1" property="att1" jdbcType="VARCHAR" />
+		<result column="att2" property="att2" jdbcType="VARCHAR" />
+		<result column="att3" property="att3" jdbcType="VARCHAR" />
+	</resultMap>
+
+
+	<select id="count" parameterType="com.iws.pojo.sysconf.SysConfDto"
+		resultType="int">
+		select count(*) as counts from sysconf where 1 = 1
+		<include refid="whereSql"></include>
+	</select>
+
+
+
+
+	<select id="querySysConfByParameter" resultMap="BaseResultMap"
+		parameterType="com.iws.pojo.sysconf.SysConfDto">
+
+		SELECT * FROM (SELECT tt.*, ROWNUM AS rowno
+		FROM (
+
+		select
+
+		<if test="sysConfInfoBean.uuid != null">
+			uuid,
+		</if>
+
+		<if test="sysConfInfoBean.cfgCategory != null">
+			CFGCategory,
+		</if>
+
+		<if test="sysConfInfoBean.cfgGroup != null">
+			CFGGroup,
+		</if>
+
+		<if test="sysConfInfoBean.cfgKey != null">
+			CFGKey,
+		</if>
+
+		<if test="sysConfInfoBean.cfgKeyType != null">
+			CFGKeyType,
+		</if>
+
+		<if test="sysConfInfoBean.cfgValue != null">
+			CFGValue,
+		</if>
+
+		<if test="sysConfInfoBean.cfgValueType != null">
+			CFGValueType,
+		</if>
+
+		<if test="sysConfInfoBean.cfgValueInfo != null">
+			CFGValueInfo,
+		</if>
+
+		<if test="sysConfInfoBean.status != null">
+			status,
+		</if>
+
+		<if test="sysConfInfoBean.creator != null">
+			creator,
+		</if>
+
+		<if test="sysConfInfoBean.createTime != null">
+			createTime,
+		</if>
+
+		<if test="sysConfInfoBean.modifier != null">
+			modifier,
+		</if>
+
+		<if test="sysConfInfoBean.modifyTime != null">
+			modifyTime,
+		</if>
+
+		<if test="sysConfInfoBean.att1 != null">
+			att1,
+		</if>
+
+		<if test="sysConfInfoBean.att2 != null">
+			att2,
+		</if>
+
+		<if test="sysConfInfoBean.att3 != null">
+			att3,
+		</if>
+		1
+
+		from
+		sysconf where 1 = 1
+
+		<include refid="whereSql"></include>
+
+		<!-- start of special -->
+		<if
+			test="sysConfSearchParameter.sort != null and sysConfSearchParameter.sort != ''">
+			order by ${sysConfSearchParameter.sort} ${sysConfSearchParameter.order}
+		</if>
+		<!-- end of special -->
+
+
+		) tt
+		WHERE ROWNUM &lt;=
+		(#{sysConfSearchParameter.start}+#{sysConfSearchParameter.number})
+		) table_alias WHERE
+		table_alias.rowno &gt;=
+		#{sysConfSearchParameter.start}
+	</select>
+
+
+	<insert id="insertSysConf" parameterType="com.iws.pojo.sysconf.SysConfInfoBean">
+		insert into sysconf
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			uuid ,
+		<if test="cfgCategory != null">
+			CFGCategory,
+		</if>
+
+		<if test="cfgGroup != null">
+			CFGGroup,
+		</if>
+
+		<if test="cfgKey != null">
+			CFGKey,
+		</if>
+
+		<if test="cfgKeyType != null">
+			CFGKeyType,
+		</if>
+
+		<if test="cfgValue != null">
+			CFGValue,
+		</if>
+
+		<if test="cfgValueType != null">
+			CFGValueType,
+		</if>
+
+		<if test="cfgValueInfo != null">
+			CFGValueInfo,
+		</if>
+
+		<if test="status != null">
+			status,
+		</if>
+
+		<if test="creator != null">
+			creator,
+		</if>
+
+<!-- 		<if test="createTime != null"> -->
+			createTime,
+<!-- 		</if> -->
+
+<!-- 		<if test="modifier != null"> -->
+<!-- 			modifier, -->
+<!-- 		</if> -->
+
+<!-- 		<if test="modifyTime != null"> -->
+<!-- 			modifyTime, -->
+<!-- 		</if> -->
+
+		<if test="att1 != null">
+			att1,
+		</if>
+
+		<if test="att2 != null">
+			att2,
+		</if>
+
+		<if test="att3 != null">
+			att3,
+		</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+
+			sys_guid(),
+
+			<if test="cfgCategory != null">
+				#{cfgCategory,jdbcType=VARCHAR},
+			</if>
+			<if test="cfgGroup != null">
+				#{cfgGroup,jdbcType=VARCHAR},
+			</if>
+			<if test="cfgKey != null">
+				#{cfgKey,jdbcType=VARCHAR},
+			</if>
+			<if test="cfgKeyType != null">
+				#{cfgKeyType,jdbcType=VARCHAR},
+			</if>
+			<if test="cfgValue != null">
+				#{cfgValue,jdbcType=VARCHAR},
+			</if>
+			<if test="cfgValueType != null">
+				#{cfgValueType,jdbcType=VARCHAR},
+			</if>
+			<if test="cfgValueInfo != null">
+				#{cfgValueInfo,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="creator != null">
+				#{creator,jdbcType=VARCHAR},
+			</if>
+<!-- 			<if test="createTime != null"> -->
+<!-- 				to_date(#{createTime,jdbcType=VARCHAR},'yyyy-mm-dd -->
+<!-- 				hh24:mi:ss'), -->
+<!-- 			</if> -->
+systimestamp,
+<!-- 			<if test="modifier != null"> -->
+<!-- 				#{modifier,jdbcType=VARCHAR}, -->
+<!-- 			</if> -->
+<!-- 			<if test="modifyTime != null"> -->
+<!-- 				to_date(#{modifyTime,jdbcType=VARCHAR},'yyyy-mm-dd -->
+<!-- 				hh24:mi:ss'), -->
+<!-- 			</if> -->
+			<if test="att1 != null">
+				#{att1,jdbcType=VARCHAR},
+			</if>
+			<if test="att2 != null">
+				#{att2,jdbcType=VARCHAR},
+			</if>
+			<if test="att3 != null">
+				#{att3,jdbcType=VARCHAR},
+			</if>
+
+		</trim>
+	</insert>
+
+
+
+
+	<update id="batchModifySysConf" parameterType="com.iws.pojo.sysconf.SysConfDto">
+		update sysconf
+		<set>
+			<if test="sysConfInfoBean.cfgCategory != null">
+				CFGCategory = #{sysConfInfoBean.cfgCategory,jdbcType=VARCHAR},
+			</if>
+			<if test="sysConfInfoBean.cfgGroup != null">
+				CFGGroup =
+				#{sysConfInfoBean.cfgGroup,jdbcType=VARCHAR},
+			</if>
+			<if test="sysConfInfoBean.cfgKey != null">
+				CFGKey = #{sysConfInfoBean.cfgKey,jdbcType=VARCHAR},
+			</if>
+			<if test="sysConfInfoBean.cfgKeyType != null">
+				CFGKeyType =
+				#{sysConfInfoBean.cfgKeyType,jdbcType=VARCHAR},
+			</if>
+			<if test="sysConfInfoBean.cfgValue != null">
+				CFGValue =
+				#{sysConfInfoBean.cfgValue,jdbcType=VARCHAR},
+			</if>
+
+			<if test="sysConfInfoBean.cfgValueType != null">
+				CFGValueType =
+				#{sysConfInfoBean.cfgValueType,jdbcType=VARCHAR},
+			</if>
+			<if test="sysConfInfoBean.cfgValueInfo != null">
+				CFGValueInfo = #{sysConfInfoBean.cfgValueInfo,jdbcType=VARCHAR},
+			</if>
+			<if test="sysConfInfoBean.status != null">
+				status = #{sysConfInfoBean.status,jdbcType=VARCHAR},
+			</if>
+<!-- 			<if test="sysConfInfoBean.creator != null"> -->
+<!-- 				creator = #{sysConfInfoBean.creator,jdbcType=VARCHAR}, -->
+<!-- 			</if> -->
+<!-- 			<if test="sysConfInfoBean.createTime != null"> -->
+<!-- 				createTime = -->
+<!-- 				to_date(#{sysConfInfoBean.createTime,jdbcType=VARCHAR},'yyyy-mm-dd -->
+<!-- 				hh24:mi:ss'), -->
+<!-- 			</if> -->
+			<if test="sysConfInfoBean.modifier != null">
+				modifier =
+				#{sysConfInfoBean.modifier,jdbcType=VARCHAR},
+			</if>
+<!-- 			<if test="sysConfInfoBean.modifyTime != null"> -->
+<!-- 				modifyTime = -->
+<!-- 				to_date(#{sysConfInfoBean.modifyTime,jdbcType=VARCHAR},'yyyy-mm-dd -->
+<!-- 				hh24:mi:ss'), -->
+<!-- 			</if> -->
+modifyTime=systimestamp,
+			<if test="sysConfInfoBean.att1 != null">
+				att1 = #{sysConfInfoBean.att1,jdbcType=VARCHAR},
+			</if>
+			<if test="sysConfInfoBean.att2 != null">
+				att2 = #{sysConfInfoBean.att2,jdbcType=VARCHAR},
+			</if>
+			<if test="sysConfInfoBean.att3 != null">
+				att3 = #{sysConfInfoBean.att3,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where 1=1
+		<include refid="whereSql"></include>
+	</update>
+
+	<delete id="deleteSysConfByUUID" parameterType="com.iws.pojo.sysconf.SysConfInfoBean">
+		delete from
+		sysconf
+		where uuid = #{uuid,jdbcType=VARCHAR}
+	</delete>
+
+
+	<sql id="whereSql">
+		<if
+			test="sysConfSearchParameter.uuid_equ != null and sysConfSearchParameter.uuid_equ != ''">
+			and uuid = #{sysConfSearchParameter.uuid_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="sysConfSearchParameter.uuid_like != null and sysConfSearchParameter.uuid_like != ''">
+			and uuid like CONCAT(CONCAT('%',
+			#{sysConfSearchParameter.uuid_like,jdbcType=VARCHAR}),'%')
+		</if>
+
+		<if
+			test="sysConfSearchParameter.cfgCategory_equ != null and sysConfSearchParameter.cfgCategory_equ != ''">
+			and CFGCategory = #{sysConfSearchParameter.cfgCategory_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="sysConfSearchParameter.cfgCategory_like != null and sysConfSearchParameter.cfgCategory_like != ''">
+			and CFGCategory like CONCAT(CONCAT('%',
+			#{sysConfSearchParameter.cfgCategory_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="sysConfSearchParameter.cfgGroup_equ != null and sysConfSearchParameter.cfgGroup_equ != ''">
+			and CFGGroup =
+			#{sysConfSearchParameter.cfgGroup_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="sysConfSearchParameter.cfgGroup_like != null and sysConfSearchParameter.cfgGroup_like != ''">
+			and CFGGroup like CONCAT(CONCAT('%',
+			#{sysConfSearchParameter.cfgGroup_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="sysConfSearchParameter.cfgKey_equ != null and sysConfSearchParameter.cfgKey_equ != ''">
+			and CFGKey =
+			#{sysConfSearchParameter.cfgKey_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="sysConfSearchParameter.cfgKey_like != null and sysConfSearchParameter.cfgKey_like != ''">
+			and CFGKey like CONCAT(CONCAT('%',
+			#{sysConfSearchParameter.cfgKey_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="sysConfSearchParameter.cfgKeyType_equ != null and sysConfSearchParameter.cfgKeyType_equ != ''">
+			and CFGKeyType =
+			#{sysConfSearchParameter.cfgKeyType_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="sysConfSearchParameter.cfgKeyType_like != null and sysConfSearchParameter.cfgKeyType_like != ''">
+			and CFGKeyType like CONCAT(CONCAT('%',
+			#{sysConfSearchParameter.cfgKeyType_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="sysConfSearchParameter.cfgValue_equ != null and sysConfSearchParameter.cfgValue_equ != ''">
+			and CFGValue =
+			#{sysConfSearchParameter.cfgValue_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="sysConfSearchParameter.cfgValue_like != null and sysConfSearchParameter.cfgValue_like != ''">
+			and CFGValue like CONCAT(CONCAT('%',
+			#{sysConfSearchParameter.cfgValue_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="sysConfSearchParameter.cfgValueType_equ != null and sysConfSearchParameter.cfgValueType_equ != ''">
+			and CFGValueType =
+			#{sysConfSearchParameter.cfgValueType_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="sysConfSearchParameter.cfgValueType_like != null and sysConfSearchParameter.cfgValueType_like != ''">
+			and CFGValueType like CONCAT(CONCAT('%',
+			#{sysConfSearchParameter.cfgValueType_like,jdbcType=VARCHAR}),'%')
+		</if>
+
+		<if
+			test="sysConfSearchParameter.cfgValueInfo_equ != null and sysConfSearchParameter.cfgValueInfo_equ != ''">
+			and CFGValueInfo =
+			#{sysConfSearchParameter.cfgValueInfo_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="sysConfSearchParameter.cfgValueInfo_like != null and sysConfSearchParameter.cfgValueInfo_like != ''">
+			and CFGValueInfo like CONCAT(CONCAT('%',
+			#{sysConfSearchParameter.cfgValueInfo_like,jdbcType=VARCHAR}),'%')
+		</if>
+		
+		<if
+			test="sysConfSearchParameter.status_equ != null and sysConfSearchParameter.status_equ != ''">
+			and status =
+			#{sysConfSearchParameter.status_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="sysConfSearchParameter.status_like != null and sysConfSearchParameter.status_like != ''">
+			and status like CONCAT(CONCAT('%',
+			#{sysConfSearchParameter.status_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="sysConfSearchParameter.creator_equ != null and sysConfSearchParameter.creator_equ != ''">
+			and creator =
+			#{sysConfSearchParameter.creator_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="sysConfSearchParameter.creator_like != null and sysConfSearchParameter.creator_like != ''">
+			and creator like CONCAT(CONCAT('%',
+			#{sysConfSearchParameter.creator_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="sysConfSearchParameter.createTime_equ != null and sysConfSearchParameter.createTime_equ != ''">
+			and createTime =
+			#{sysConfSearchParameter.createTime_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="sysConfSearchParameter.createTime_like != null and sysConfSearchParameter.createTime_like != ''">
+			and createTime like CONCAT(CONCAT('%',
+			#{sysConfSearchParameter.createTime_like,jdbcType=VARCHAR}),'%')
+		</if>
+
+		<if
+			test="sysConfSearchParameter.createTimeBefore != null and sysConfSearchParameter.createTimeBefore != ''">
+			and createTime &lt;
+			to_date(#{sysConfSearchParameter.createTimeBefore,jdbcType=VARCHAR},
+			'yyyy-mm-dd hh24:mi:ss')
+		</if>
+		<if
+			test="sysConfSearchParameter.createTimeAfter != null and sysConfSearchParameter.createTimeAfter != ''">
+			and createTime &gt;
+			to_date(#{sysConfSearchParameter.createTimeAfter,jdbcType=VARCHAR},
+			'yyyy-mm-dd hh24:mi:ss')
+		</if>
+
+		<if
+			test="sysConfSearchParameter.modifier_equ != null and sysConfSearchParameter.modifier_equ != ''">
+			and modifier =
+			#{sysConfSearchParameter.modifier_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="sysConfSearchParameter.modifier_like != null and sysConfSearchParameter.modifier_like != ''">
+			and modifier like CONCAT(CONCAT('%',
+			#{sysConfSearchParameter.modifier_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="sysConfSearchParameter.modifyTime_equ != null and sysConfSearchParameter.modifyTime_equ != ''">
+			and modifyTime =
+			#{sysConfSearchParameter.modifyTime_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="sysConfSearchParameter.modifyTime_like != null and sysConfSearchParameter.modifyTime_like != ''">
+			and modifyTime like CONCAT(CONCAT('%',
+			#{sysConfSearchParameter.modifyTime_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="sysConfSearchParameter.modifyTimeBefore != null and sysConfSearchParameter.modifyTimeBefore != ''">
+			and modifyTime &lt;
+			to_date(#{sysConfSearchParameter.modifyTimeBefore,jdbcType=VARCHAR},
+			'yyyy-mm-dd hh24:mi:ss')
+		</if>
+		<if
+			test="sysConfSearchParameter.modifyTimeAfter != null and sysConfSearchParameter.modifyTimeAfter != ''">
+			and modifyTime &gt;
+			to_date(#{sysConfSearchParameter.modifyTimeAfter,jdbcType=VARCHAR},
+			'yyyy-mm-dd hh24:mi:ss')
+		</if>
+		<if
+			test="sysConfSearchParameter.att1_equ != null and sysConfSearchParameter.att1_equ != ''">
+			and att1 = #{sysConfSearchParameter.att1_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="sysConfSearchParameter.att1_like != null and sysConfSearchParameter.att1_like != ''">
+			and att1 like CONCAT(CONCAT('%',
+			#{sysConfSearchParameter.att1_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="sysConfSearchParameter.att2_equ != null and sysConfSearchParameter.att2_equ != ''">
+			and att2 = #{sysConfSearchParameter.att2_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="sysConfSearchParameter.att2_like != null and sysConfSearchParameter.att2_like != ''">
+			and att2 like CONCAT(CONCAT('%',
+			#{sysConfSearchParameter.att2_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="sysConfSearchParameter.att3_equ != null and sysConfSearchParameter.att3_equ != ''">
+			and att3 = #{sysConfSearchParameter.att3_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="sysConfSearchParameter.att3_like != null and sysConfSearchParameter.att3_like != ''">
+			and att3 like CONCAT(CONCAT('%',
+			#{sysConfSearchParameter.att3_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<!-- end of normal -->
+
+	</sql>
+
+</mapper>

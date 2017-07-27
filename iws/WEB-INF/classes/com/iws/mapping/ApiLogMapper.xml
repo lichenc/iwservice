@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.iws.dao.ApiLogDao">
+	<resultMap id="BaseResultMap" type="com.iws.pojo.apilog.ApiLogInfoBean">
+		<id column="uuid" property="uuid" jdbcType="VARCHAR" />
+		<result column="logcode" property="logcode" jdbcType="VARCHAR" />
+		<result column="loglevel" property="loglevel" jdbcType="VARCHAR" />
+		<result column="logtitle" property="logtitle" jdbcType="VARCHAR" />
+		<result column="logcontent" property="logcontent" jdbcType="VARCHAR" />
+		<result column="extlogcode" property="extlogcode" jdbcType="VARCHAR" />
+		<result column="extlogcontent" property="extlogcontent" jdbcType="VARCHAR" />
+		<result column="logcategory" property="logcategory" jdbcType="VARCHAR" />
+		<result column="logmodule" property="logmodule" jdbcType="VARCHAR" />
+		<result column="actip" property="actip" jdbcType="VARCHAR" />
+		<result column="actmac" property="actmac" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="creator" property="creator" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="VARCHAR" />
+		<result column="modifier" property="modifier" jdbcType="VARCHAR" />
+		<result column="modifyTime" property="modifyTime" jdbcType="VARCHAR" />
+		<result column="att1" property="att1" jdbcType="VARCHAR" />
+		<result column="att2" property="att2" jdbcType="VARCHAR" />
+		<result column="att3" property="att3" jdbcType="VARCHAR" />
+	</resultMap>
+
+
+	<select id="count" parameterType="com.iws.pojo.apilog.ApiLogDto"
+		resultType="int">
+		select count(*) as counts from apilog where 1 = 1
+		<include refid="whereSql"></include>
+	</select>
+
+
+
+
+	<select id="queryApiLogByParameter" resultMap="BaseResultMap"
+		parameterType="com.iws.pojo.apilog.ApiLogDto">
+
+		SELECT * FROM (SELECT tt.*, ROWNUM AS rowno
+		FROM (
+
+		select
+
+		<if test="apiLogInfoBean.uuid != null">
+			uuid,
+		</if>
+
+		<if test="apiLogInfoBean.logcode != null">
+			logcode,
+		</if>
+
+		<if test="apiLogInfoBean.loglevel != null">
+			loglevel,
+		</if>
+
+		<if test="apiLogInfoBean.logtitle != null">
+			logtitle,
+		</if>
+
+		<if test="apiLogInfoBean.logcontent != null">
+			logcontent,
+		</if>
+
+		<if test="apiLogInfoBean.extlogcode != null">
+			extlogcode,
+		</if>
+
+		<if test="apiLogInfoBean.extlogcontent != null">
+			extlogcontent,
+		</if>
+
+		<if test="apiLogInfoBean.logcategory != null">
+			logcategory,
+		</if>
+
+		<if test="apiLogInfoBean.logmodule != null">
+			logmodule,
+		</if>
+
+		<if test="apiLogInfoBean.actip != null">
+			actip,
+		</if>
+
+		<if test="apiLogInfoBean.actmac != null">
+			actmac,
+		</if>
+
+		<if test="apiLogInfoBean.status != null">
+			status,
+		</if>
+
+		<if test="apiLogInfoBean.creator != null">
+			creator,
+		</if>
+
+		<if test="apiLogInfoBean.createTime != null">
+			createTime,
+		</if>
+
+		<if test="apiLogInfoBean.modifier != null">
+			modifier,
+		</if>
+
+		<if test="apiLogInfoBean.modifyTime != null">
+			modifyTime,
+		</if>
+
+		<if test="apiLogInfoBean.att1 != null">
+			att1,
+		</if>
+
+		<if test="apiLogInfoBean.att2 != null">
+			att2,
+		</if>
+
+		<if test="apiLogInfoBean.att3 != null">
+			att3,
+		</if>
+		1
+
+		from
+		apilog where 1 = 1
+
+		<include refid="whereSql"></include>
+
+		<!-- start of special -->
+		<if test="apiLogSearchParameter.sort != null and apiLogSearchParameter.sort != ''">
+			order by ${apiLogSearchParameter.sort} ${apiLogSearchParameter.order}
+		</if>
+		<!-- end of special -->
+
+
+		) tt
+		WHERE ROWNUM &lt;
+		(#{apiLogSearchParameter.start}+#{apiLogSearchParameter.number})
+		) table_alias WHERE
+		table_alias.rowno &gt;=
+		#{apiLogSearchParameter.start}
+	</select>
+
+
+	<insert id="insertApiLog" parameterType="com.iws.pojo.apilog.ApiLogInfoBean">
+		insert into apilog
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+				uuid ,
+			<if test="logcode != null">
+				logcode,
+			</if>
+			<if test="loglevel != null">
+				loglevel,
+			</if>
+			<if test="logtitle != null">
+				logtitle,
+			</if>
+			<if test="logcontent != null">
+				logcontent,
+			</if>
+			<if test="extlogcode != null">
+				extlogcode,
+			</if>
+			<if test="extlogcontent != null">
+				extlogcontent,
+			</if>
+			<if test="logcategory != null">
+				logcategory,
+			</if>
+			<if test="logmodule != null">
+				logmodule,
+			</if>
+			
+			<if test="actip != null">
+				actip,
+			</if>
+			<if test="actmac != null">
+				actmac,
+			</if>
+			
+			<if test="status != null">
+				status,
+			</if>
+			<if test="creator != null">
+				creator,
+			</if>
+<!-- 			<if test="createTime != null"> -->
+				createTime,
+<!-- 			</if> -->
+<!-- 			<if test="modifier != null"> -->
+<!-- 				modifier, -->
+<!-- 			</if> -->
+<!-- 			<if test="modifyTime != null"> -->
+<!-- 				modifyTime, -->
+<!-- 			</if> -->
+			<if test="att1 != null">
+				att1,
+			</if>
+			<if test="att2 != null">
+				att2,
+			</if>
+			<if test="att3 != null">
+				att3,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			
+			sys_guid(),
+			
+			<if test="logcode != null">
+				#{logcode,jdbcType=VARCHAR},
+			</if>
+			<if test="loglevel != null">
+				#{loglevel,jdbcType=VARCHAR},
+			</if>
+			<if test="logtitle != null">
+				#{logtitle,jdbcType=VARCHAR},
+			</if>
+			<if test="logcontent != null">
+				#{logcontent,jdbcType=VARCHAR},
+			</if>
+			<if test="extlogcode != null">
+				#{extlogcode,jdbcType=VARCHAR},
+			</if>
+			<if test="extlogcontent != null">
+				#{extlogcontent,jdbcType=VARCHAR},
+			</if>
+			
+			<if test="logcategory != null">
+				#{logcategory,jdbcType=VARCHAR},
+			</if>
+			<if test="logmodule != null">
+				#{logmodule,jdbcType=VARCHAR},
+			</if>
+			
+			
+			<if test="actip != null">
+				#{actip,jdbcType=VARCHAR},
+			</if>
+			<if test="actmac != null">
+				#{actmac,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="creator != null">
+				#{creator,jdbcType=VARCHAR},
+			</if>
+<!-- 			<if test="createTime != null"> -->
+<!-- 				to_date(#{createTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'), -->
+<!-- 			</if> -->
+systimestamp,
+<!-- 			<if test="modifier != null"> -->
+<!-- 				#{modifier,jdbcType=VARCHAR}, -->
+<!-- 			</if> -->
+<!-- 			<if test="modifyTime != null"> -->
+<!-- 				to_date(#{modifyTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'), -->
+<!-- 			</if> -->
+			<if test="att1 != null">
+				#{att1,jdbcType=VARCHAR},
+			</if>
+			<if test="att2 != null">
+				#{att2,jdbcType=VARCHAR},
+			</if>
+			<if test="att3 != null">
+				#{att3,jdbcType=VARCHAR},
+			</if>
+
+		</trim>
+	</insert>
+
+	
+
+
+	<update id="batchModifyApiLog" parameterType="com.iws.pojo.apilog.ApiLogDto">
+		update apilog
+		<set>
+			<if test="apiLogInfoBean.logcode != null">
+				logcode = #{apiLogInfoBean.logcode,jdbcType=VARCHAR},
+			</if>
+			<if test="apiLogInfoBean.loglevel != null">
+				loglevel =
+				#{apiLogInfoBean.loglevel,jdbcType=VARCHAR},
+			</if>
+			<if test="apiLogInfoBean.logtitle != null">
+				logtitle = #{apiLogInfoBean.logtitle,jdbcType=VARCHAR},
+			</if>
+			<if test="apiLogInfoBean.logcontent != null">
+				logcontent =
+				#{apiLogInfoBean.logcontent,jdbcType=VARCHAR},
+			</if>
+			<if test="apiLogInfoBean.extlogcode != null">
+				extlogcode =
+				#{apiLogInfoBean.extlogcode,jdbcType=VARCHAR},
+			</if>
+			<if test="apiLogInfoBean.extlogcontent != null">
+				extlogcontent =
+				#{apiLogInfoBean.extlogcontent,jdbcType=VARCHAR},
+			</if>
+			<if test="apiLogInfoBean.logcategory != null">
+				logcategory =
+				#{apiLogInfoBean.logcategory,jdbcType=VARCHAR},
+			</if>
+			<if test="apiLogInfoBean.logmodule != null">
+				logmodule =
+				#{apiLogInfoBean.logmodule,jdbcType=VARCHAR},
+			</if>
+			<if test="apiLogInfoBean.actip != null">
+				actip = #{apiLogInfoBean.actip,jdbcType=VARCHAR},
+			</if>
+			<if test="apiLogInfoBean.actmac != null">
+				actmac =
+				#{apiLogInfoBean.actmac,jdbcType=VARCHAR},
+			</if>
+			<if test="apiLogInfoBean.status != null">
+				status = #{apiLogInfoBean.status,jdbcType=VARCHAR},
+			</if>
+<!-- 			<if test="apiLogInfoBean.creator != null"> -->
+<!-- 				creator = #{apiLogInfoBean.creator,jdbcType=VARCHAR}, -->
+<!-- 			</if> -->
+<!-- 			<if test="apiLogInfoBean.createTime != null"> -->
+<!-- 				createTime = -->
+<!-- 				to_date(#{apiLogInfoBean.createTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'), -->
+<!-- 			</if> -->
+			<if test="apiLogInfoBean.modifier != null">
+				modifier =
+				#{apiLogInfoBean.modifier,jdbcType=VARCHAR},
+			</if>
+<!-- 			<if test="apiLogInfoBean.modifyTime != null"> -->
+<!-- 				modifyTime = -->
+<!-- 				to_date(#{apiLogInfoBean.modifyTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'), -->
+<!-- 			</if> -->
+modifyTime=systimestamp,
+			<if test="apiLogInfoBean.att1 != null">
+				att1 = #{apiLogInfoBean.att1,jdbcType=VARCHAR},
+			</if>
+			<if test="apiLogInfoBean.att2 != null">
+				att2 = #{apiLogInfoBean.att2,jdbcType=VARCHAR},
+			</if>
+			<if test="apiLogInfoBean.att3 != null">
+				att3 = #{apiLogInfoBean.att3,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where 1=1
+		<include refid="whereSql"></include>
+	</update>
+
+	<delete id="deleteapilogByUUID" parameterType="com.iws.pojo.apilog.ApiLogInfoBean">
+		delete from
+		apilog
+		where uuid = #{uuid,jdbcType=VARCHAR}
+	</delete>
+
+
+	<sql id="whereSql">
+		<if
+			test="apiLogSearchParameter.uuid_equ != null and apiLogSearchParameter.uuid_equ != ''">
+			and uuid = #{apiLogSearchParameter.uuid_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.uuid_like != null and apiLogSearchParameter.uuid_like != ''">
+			and uuid like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.uuid_like,jdbcType=VARCHAR}),'%')
+		</if>
+
+		<if
+			test="apiLogSearchParameter.logcode_equ != null and apiLogSearchParameter.logcode_equ != ''">
+			and logcode = #{apiLogSearchParameter.logcode_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.logcode_like != null and apiLogSearchParameter.logcode_like != ''">
+			and logcode like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.logcode_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="apiLogSearchParameter.loglevel_equ != null and apiLogSearchParameter.loglevel_equ != ''">
+			and loglevel = #{apiLogSearchParameter.loglevel_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.loglevel_like != null and apiLogSearchParameter.loglevel_like != ''">
+			and loglevel like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.loglevel_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="apiLogSearchParameter.logtitle_equ != null and apiLogSearchParameter.logtitle_equ != ''">
+			and logtitle = #{apiLogSearchParameter.logtitle_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.logtitle_like != null and apiLogSearchParameter.logtitle_like != ''">
+			and logtitle like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.logtitle_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="apiLogSearchParameter.logcontent_equ != null and apiLogSearchParameter.logcontent_equ != ''">
+			and logcontent = #{apiLogSearchParameter.logcontent_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.logcontent_like != null and apiLogSearchParameter.logcontent_like != ''">
+			and logcontent like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.logcontent_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="apiLogSearchParameter.extlogcode_equ != null and apiLogSearchParameter.extlogcode_equ != ''">
+			and extlogcode = #{apiLogSearchParameter.extlogcode_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.extlogcode_like != null and apiLogSearchParameter.extlogcode_like != ''">
+			and extlogcode like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.extlogcode_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="apiLogSearchParameter.extlogcontent_equ != null and apiLogSearchParameter.extlogcontent_equ != ''">
+			and extlogcontent = #{apiLogSearchParameter.extlogcontent_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.extlogcontent_like != null and apiLogSearchParameter.extlogcontent_like != ''">
+			and extlogcontent like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.extlogcontent_like,jdbcType=VARCHAR}),'%')
+		</if>
+
+		
+
+		<if
+			test="apiLogSearchParameter.logcategory_equ != null and apiLogSearchParameter.logcategory_equ != ''">
+			and logcategory = #{apiLogSearchParameter.logcategory_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.logcategory_like != null and apiLogSearchParameter.logcategory_like != ''">
+			and logcategory like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.logcategory_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="apiLogSearchParameter.logmodule_equ != null and apiLogSearchParameter.logmodule_equ != ''">
+			and logmodule = #{apiLogSearchParameter.logmodule_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.logmodule_like != null and apiLogSearchParameter.logmodule_like != ''">
+			and logmodule like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.logmodule_like,jdbcType=VARCHAR}),'%')
+		</if>
+
+		<if
+			test="apiLogSearchParameter.actip_equ != null and apiLogSearchParameter.actip_equ != ''">
+			and actip = #{apiLogSearchParameter.actip_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.actip_like != null and apiLogSearchParameter.actip_like != ''">
+			and actip like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.actip_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="apiLogSearchParameter.actmac_equ != null and apiLogSearchParameter.actmac_equ != ''">
+			and actmac =
+			#{apiLogSearchParameter.actmac_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.actmac_like != null and apiLogSearchParameter.actmac_like != ''">
+			and actmac like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.actmac_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="apiLogSearchParameter.status_equ != null and apiLogSearchParameter.status_equ != ''">
+			and status = #{apiLogSearchParameter.status_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.status_like != null and apiLogSearchParameter.status_like != ''">
+			and status like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.status_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="apiLogSearchParameter.creator_equ != null and apiLogSearchParameter.creator_equ != ''">
+			and creator = #{apiLogSearchParameter.creator_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.creator_like != null and apiLogSearchParameter.creator_like != ''">
+			and creator like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.creator_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="apiLogSearchParameter.createTime_equ != null and apiLogSearchParameter.createTime_equ != ''">
+			and createTime = #{apiLogSearchParameter.createTime_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.createTime_like != null and apiLogSearchParameter.createTime_like != ''">
+			and createTime like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.createTime_like,jdbcType=VARCHAR}),'%')
+		</if>
+
+		<if
+			test="apiLogSearchParameter.createTimeBefore != null and apiLogSearchParameter.createTimeBefore != ''">
+			and createTime &lt; to_date(#{apiLogSearchParameter.createTimeBefore,jdbcType=VARCHAR}, 'yyyy-mm-dd hh24:mi:ss')
+		</if>
+		<if
+			test="apiLogSearchParameter.createTimeAfter != null and apiLogSearchParameter.createTimeAfter != ''">
+			and createTime &gt; to_date(#{apiLogSearchParameter.createTimeAfter,jdbcType=VARCHAR}, 'yyyy-mm-dd hh24:mi:ss')
+		</if>
+
+		<if
+			test="apiLogSearchParameter.modifier_equ != null and apiLogSearchParameter.modifier_equ != ''">
+			and modifier = #{apiLogSearchParameter.modifier_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.modifier_like != null and apiLogSearchParameter.modifier_like != ''">
+			and modifier like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.modifier_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="apiLogSearchParameter.modifyTime_equ != null and apiLogSearchParameter.modifyTime_equ != ''">
+			and modifyTime = #{apiLogSearchParameter.modifyTime_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.modifyTime_like != null and apiLogSearchParameter.modifyTime_like != ''">
+			and modifyTime like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.modifyTime_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="apiLogSearchParameter.modifyTimeBefore != null and apiLogSearchParameter.modifyTimeBefore != ''">
+			and modifyTime &lt; to_date(#{apiLogSearchParameter.modifyTimeBefore,jdbcType=VARCHAR}, 'yyyy-mm-dd hh24:mi:ss')
+		</if>
+		<if
+			test="apiLogSearchParameter.modifyTimeAfter != null and apiLogSearchParameter.modifyTimeAfter != ''">
+			and modifyTime &gt; to_date(#{apiLogSearchParameter.modifyTimeAfter,jdbcType=VARCHAR}, 'yyyy-mm-dd hh24:mi:ss')
+		</if>
+		<if
+			test="apiLogSearchParameter.att1_equ != null and apiLogSearchParameter.att1_equ != ''">
+			and att1 = #{apiLogSearchParameter.att1_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.att1_like != null and apiLogSearchParameter.att1_like != ''">
+			and att1 like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.att1_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="apiLogSearchParameter.att2_equ != null and apiLogSearchParameter.att2_equ != ''">
+			and att2 = #{apiLogSearchParameter.att2_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.att2_like != null and apiLogSearchParameter.att2_like != ''">
+			and att2 like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.att2_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<if
+			test="apiLogSearchParameter.att3_equ != null and apiLogSearchParameter.att3_equ != ''">
+			and att3 = #{apiLogSearchParameter.att3_equ,jdbcType=VARCHAR}
+		</if>
+
+		<if
+			test="apiLogSearchParameter.att3_like != null and apiLogSearchParameter.att3_like != ''">
+			and att3 like CONCAT(CONCAT('%',
+			#{apiLogSearchParameter.att3_like,jdbcType=VARCHAR}),'%')
+		</if>
+		<!-- end of normal -->
+
+	</sql>
+
+</mapper>
